@@ -54,10 +54,13 @@ function App() {
         margin: "5px",
         color: "white",
     }
-}));
-  // const maxWidth = window.innerWidth;
-  const maxWidth = 1200;
+  }));
+
+  window.addEventListener("resize", updateWidth);
+
+  //const maxWidth = 1200;
   var maxRectHeight = 200;
+  const [maxWidth, setMaxWidth] = React.useState(window.innerWidth * 0.7);
 
 
   // filters
@@ -72,6 +75,10 @@ function App() {
   const [stepsCounter, setStepsCounter] = React.useState(0);
   const [lightUp, setLightUp] = React.useState([]);
 
+
+  function updateWidth(){
+    setMaxWidth(window.innerWidth * 0.7);
+  }
 
   function timer(){
     // console.log(steps);
@@ -122,7 +129,7 @@ function App() {
   function Sort(heights, setSteps, setStepsCounter, setTotalSteps){
     if(sortType == "BubbleSort"){
       BubbleSort(heights, setSteps, setStepsCounter, setTotalSteps);
-    } else if(sortType == "MergeSort"){
+    } else if(sortType == "MergeSort(Switch)"){
       MergeSortSwitch(heights, setSteps, setStepsCounter, setTotalSteps);
     }
   }
@@ -134,6 +141,7 @@ function App() {
       
       <div className="App">
         <div className="App-header">
+          {/* {JSON.stringify(maxWidth)} */}
           <Button
               className={classes.button}
               variant="contained"
@@ -143,7 +151,7 @@ function App() {
           </Button>
           <SingleSelect 
             title={"Type of Sort"}
-            items={["BubbleSort", "MergeSort", "HeapSort"]}
+            items={["BubbleSort", "MergeSort(Switch)", "MergeSort(Put)", "HeapSort"]}
             value={sortType}
             onChange={(sortType) => setSortType(sortType)}
           />

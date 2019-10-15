@@ -1,6 +1,6 @@
 // MergeSort
 
-export default function MergeSort(arr, setSteps, setStepsCounter, setTotalSteps){
+export default function MergeSortSwitch(arr, setSteps, setStepsCounter, setTotalSteps){
     //IT IS CRUCIAL TO MAKE A COPY HERE!!!
     //YOU CANNOT MANIPULATE THE ORIGINAL ARRAY!!!
     let copy = [...arr];
