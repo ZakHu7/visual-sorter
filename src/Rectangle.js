@@ -5,14 +5,25 @@ import './Rectangle.css'
 export default function Rectangle(props){
     var color = "#86C232";
     if(props.color){
-        color = "#61892F";
+        color = "#32C2AA";
     }
-    var style = {
+    var rectangleStyle = {
         width: props.width,
         height: props.height,
         margin: props.margin,
         backgroundColor: color,
     }
 
-    return <span className="rectangle" style={style}> {props.data} </span>
+    var labelStyle = {
+        //left: Math.round(props.width/5),
+        bottom: 12,
+    }
+
+    return (
+        <span className="rectangle" style={rectangleStyle}>
+            <div className="label" style={labelStyle}>
+                {props.data} 
+            </div>
+        </span>
+    );
 }

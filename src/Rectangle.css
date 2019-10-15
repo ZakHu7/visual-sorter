@@ -1,11 +1,17 @@
 .rectangle {
     display: inline-flex;
-    background-color: #09d3ac;
+    /* background-color: #09d3ac; */
     /* margin: 10px; */
     /* height: 200px; */
     /* width: 100px; */
     vertical-align: bottom;
-    text-align: center;
+    
     /* align-items: bottom; */
     /* transition-duration: 2s; */
+}
+
+.label {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
 }
