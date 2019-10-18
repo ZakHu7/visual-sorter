@@ -10,27 +10,34 @@ export default function CreateRectangles(props){
     //     margin: props.margin,
     // }
     var rectNum = props.rectNum;
-    var maxWidth = props.maxWidth;
-    var heights = props.heights;
+    var data = props.data;
+    var lightUp = props.lightUp;
 
-    var width = Math.round(maxWidth/rectNum);
-    var margin = 1;
+    
+    var margin = 0.5;
 
     var rects = [];
 
     for(var i = 0; i < rectNum; ++i){
-        var height = heights[i];
-        var data = height;
-        if (height == 0) {
-            data = "";
+        if (data === undefined || data[i] === undefined) {
+            continue;
         }
-        //alert(height);
-        if (props.lightUp.includes(i)){
+        //console.log(i);
+        var rect = data[i];
+        var height = rect.height;
+        var width = rect.width;
+        var color = rect.color
+        var displayHeight = height;
+        if (height == 0) {
+            displayHeight = "";
+        }
+        //props.lightUp.includes(i)
+        if (lightUp.includes(i)){
             //console.log(i, props.lightUp);
-            rects.push(<Rectangle width={width} height={height} margin={margin} data={data} color={true}/>);
+            rects.push(<Rectangle key={i} width={width} height={height} margin={margin} displayHeight={displayHeight} color={color}/>);
             
         } else {
-            rects.push(<Rectangle width={width} height={height} margin={margin} data={data}/>);
+            rects.push(<Rectangle key={i} width={width} height={height} margin={margin} displayHeight={displayHeight} color={color}/>);
         }
     }
 

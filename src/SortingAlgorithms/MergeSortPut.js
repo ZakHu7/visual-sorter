@@ -35,7 +35,7 @@ function merge(left, right, location, steps) {
 			break;
 		}
 
-		if (left[i] < right[j]) {
+		if (left[i].height < right[j].height) {
 			// ["instruction", index, toPut]
 			// "p2" stands for "put 2"
 			// put what is at toPut at the index of heightsBottom 

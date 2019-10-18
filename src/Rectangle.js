@@ -3,15 +3,15 @@ import './Rectangle.css'
 
 
 export default function Rectangle(props){
-    var color = "#86C232";
-    if(props.color){
-        color = "#32C2AA";
-    }
+    // var color = "#86C232";
+    // if(props.color){
+    //     color = "#32C2AA";
+    // }
     var rectangleStyle = {
         width: props.width,
         height: props.height,
         margin: props.margin,
-        backgroundColor: color,
+        backgroundColor: props.color,
     }
 
     var labelStyle = {
@@ -22,7 +22,8 @@ export default function Rectangle(props){
     return (
         <span className="rectangle" style={rectangleStyle}>
             <div className="label" style={labelStyle}>
-                {props.data} 
+                {props.displayHeight} 
+                {/* {props.color} */}
             </div>
         </span>
     );

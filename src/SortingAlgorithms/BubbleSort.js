@@ -10,7 +10,7 @@ export default function BubbleSort(arr, setSteps, setStepsCounter, setTotalSteps
 
     for(var j = 0; j < copy.length - 1;++j){
         for(var i = 0; i < copy.length-1-j; ++i){
-            if(copy[i] > copy[i+1]){
+            if(copy[i].height > copy[i+1].height){
                 var tmp = copy[i];
                 copy[i] = copy[i+1];
                 copy[i+1] = tmp;
@@ -21,7 +21,7 @@ export default function BubbleSort(arr, setSteps, setStepsCounter, setTotalSteps
             }
         }
     }
-    //console.log(copy);
+    // console.log(copy);
     setSteps(steps);
     setStepsCounter(steps.length);
     setTotalSteps(steps.length);

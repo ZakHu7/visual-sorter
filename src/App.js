@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-// import logo from './logo.svg';
+import logo from './favicon.ico';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
@@ -9,32 +9,62 @@ import Rectangle from './Rectangle.js';
 import SingleSelect from './SingleSelect.js';
 import CreateRectangles from './CreateRectangles.js';
 
-import BubbleSort from './BubbleSort.js';
-import MergeSortSwitch from './MergeSortSwitch.js';
-import MergeSortPut from './MergeSortPut.js';
+import BubbleSort from './SortingAlgorithms/BubbleSort.js';
+import MergeSortSwitch from './SortingAlgorithms/MergeSortSwitch.js';
+import MergeSortPut from './SortingAlgorithms/MergeSortPut.js';
+import QuickSort from './SortingAlgorithms/QuickSort.js';
+
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { createDeflate } from 'zlib';
+
+var Rainbow = require('rainbowvis.js');
 
 const theme = createMuiTheme({
 	palette: {
 		primary: {
-			light: '#86C232',
+			light: '#98d049',
 			main: '#86C232',
-			dark: '#86C232',
+			dark: '#70a22a',
 		},
 		secondary: {
-			light: '#474B4F',
-			main: '#474B4F',
-			dark: '#474B4F',
+			light: '#12e2e2"',
+			main: '#32c3c3',
+			dark: '#43b1b1',
 		}
 	},
 
 })
+
+class Rect {
+	constructor(height,width,color) {
+		this.height = height;
+		this.width = width;
+		this.color = color;
+	}
+}
+
+/**
+ * Shuffles array in place.
+ * @param {Array} a items An array containing the items.
+ * From StackOverflow
+ */
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
 
 function getData(rectNum, maxRectHeight) {
 	var res = [];
 	for (var i = 0; i < rectNum; ++i) {
 		res.push(1 + Math.round(Math.random() * maxRectHeight));
 	}
+	res.sort(function(a, b){return a-b});
 	//console.log(res);
 	return res;
 }
@@ -50,7 +80,7 @@ function App() {
 
 	const useStyles = makeStyles(theme => ({
 		button: {
-			background: '#86C232',
+			// background: '#86C232',
 			margin: "5px",
 			color: "white",
 		}
@@ -58,18 +88,24 @@ function App() {
 
 	window.addEventListener("resize", updateWidth);
 
+	var rainbow = new Rainbow();
+	rainbow.setSpectrum('#ffffff', "#86C232", "#32c3c3");
+	
+	
+
 	//const maxWidth = 1200;
 	var maxData = 200;
 	const [maxWidth, setMaxWidth] = React.useState(window.innerWidth * 0.7);
 
 
-	// filters
+	// filters, set default values
 	const [sortType, setSortType] = React.useState("MergeSort(Put)");
-	const [rectNum, setRectNum] = React.useState(10);
-	const [speed, setSpeed] = React.useState(100);
+	const [rectNum, setRectNum] = React.useState(25);
+	const [speed, setSpeed] = React.useState(1);
 
 	// data tracking
-	const [data, setData] = React.useState(getData(rectNum, maxData));
+	const [gradient, setGradient] = React.useState([]);
+	const [data, setData] = React.useState([]);
 	const [dataBottom, setDataBottom] = React.useState(new Array(rectNum).fill(0));
 	const [steps, setSteps] = React.useState([]);
 	const [totalSteps, setTotalSteps] = React.useState(0);
@@ -79,15 +115,44 @@ function App() {
 	const [sorting, setSorting] = React.useState(false);
 
 
+
 	function updateWidth() {
 		setMaxWidth(window.innerWidth * 0.7);
 	}
 
+	function updateGradient() {
+		rainbow.setNumberRange(0, rectNum); 
+		var res = [];
+		for(var i = 0; i < rectNum; ++i) {
+			res.push("#" + rainbow.colourAt(i));
+		}
+		return res;
+	}
+
+	function createData(){
+		//console.log(rectNum);
+		var heights = getData(rectNum, maxData);
+		var width = Math.round(maxWidth/rectNum);
+		var newGradient = updateGradient();
+		var res = [];
+		for(var i = 0; i < rectNum; ++i){
+			let tmp = new Rect(heights[i], width, newGradient[i]);
+			res.push(tmp);
+		}
+
+		res = shuffle(res);
+		// console.log(JSON.stringify(res));
+		setGradient(newGradient);
+		setData(res);
+	}
+
+
 	function reset(){
 		setSorting(false);
-		setDataBottom(new Array(rectNum).fill(0));
+		setDataBottom(new Array(rectNum).fill(new Rect(0,Math.round(maxWidth/rectNum),0)));
 		setLightUp([]);
 		setLightUpBottom([]);
+
 	}
 
 	function timer() {
@@ -110,7 +175,7 @@ function App() {
 			let tmp = copyData[a];
 			copyData[a] = copyData[b];
 			copyData[b] = tmp;
-
+			
 			setLightUp([a, b]);
 		} else if (instruction == 'p') {
 			// Put:
@@ -164,7 +229,7 @@ function App() {
 			setLightUpBottom(toLightUp);
 		}
 
-
+		// console.log(copyData);
 		setData(copyData);
 		setDataBottom(copyDataBottom);
 		setStepsCounter(stepsCounter - 1);
@@ -182,7 +247,9 @@ function App() {
 	);
 
 	useEffect(() => {
-		setData(getData(rectNum, maxData));
+		// setGradient(updateGradient());
+		// setData(createData());		
+		createData();
 	},
 		[rectNum]
 	);
@@ -195,6 +262,8 @@ function App() {
 			MergeSortSwitch(heights, setSteps, setStepsCounter, setTotalSteps);
 		} else if (sortType == "MergeSort(Put)") {
 			MergeSortPut(heights, setSteps, setStepsCounter, setTotalSteps);
+		} else if (sortType == "QuickSort") {
+			QuickSort(heights, setSteps, setStepsCounter, setTotalSteps);
 		}
 	}
 
@@ -205,17 +274,11 @@ function App() {
 
 			<div className="App">
 				<div className="App-header">
+					{/* <img src={logo} alt="Logo" style={{width:80, height:80}}/> */}
 					{/* {JSON.stringify(maxWidth)} */}
-					<Button
-						className={classes.button}
-						variant="contained"
-						onClick={() => { reset(); setData(getData(rectNum, maxData)); }}
-					>
-						Randomize
-          </Button>
 					<SingleSelect
 						title={"Type of Sort"}
-						items={["BubbleSort", "MergeSort(Switch)", "MergeSort(Put)", "HeapSort"]}
+						items={["BubbleSort", "MergeSort(Switch)", "MergeSort(Put)", "QuickSort"]}
 						value={sortType}
 						onChange={(sortType) => { reset(); setSortType(sortType); }}
 					/>
@@ -227,24 +290,34 @@ function App() {
 					/>
 					<SingleSelect
 						title={"Speed(ms)"}
-						items={[1, 50, 100, 500]}
+						items={[1, 10, 100, 500]}
 						value={speed}
 						onChange={(speed) => { reset(); setSpeed(speed); }}
 					/>
 					<Button
 						className={classes.button}
 						variant="contained"
+						color="primary"
+						onClick={() => { reset(); createData(); }}
+					>
+						Randomize
+          			</Button>
+					<Button
+						className={classes.button}
+						variant="contained"
+						color="secondary"
 						onClick={() => Sort(data, setSteps, setStepsCounter, setTotalSteps)}
 					>
 						Sort
-          </Button>
+          			</Button>
 				</div>
+
 				<div className="App-main">
+					
 					{/* <Clock></Clock> */}
 					<CreateRectangles
 						rectNum={rectNum}
-						maxWidth={maxWidth}
-						heights={data}
+						data={data}
 						lightUp={lightUp}
 					>
 					</CreateRectangles>
@@ -255,14 +328,13 @@ function App() {
 					{/* <Clock></Clock> */}
 					<CreateRectangles
 						rectNum={rectNum}
-						maxWidth={maxWidth}
-						heights={dataBottom}
+						data={dataBottom}
 						lightUp={lightUpBottom}
 					>
 					</CreateRectangles>
 
 				</div>
-				{/* {JSON.stringify(heights)} */}
+				{JSON.stringify(data)}
 
 
 			</div>

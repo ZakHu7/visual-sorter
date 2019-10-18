@@ -29,12 +29,12 @@ function mergeSortDivide(arr, l, r, steps){
 function mergeSortConquer(arr, start, mid, end, steps){
     var start2 = mid + 1;
 
-    if(arr[mid] <= arr[start2]){
+    if(arr[mid].height <= arr[start2].height){
         return;
     }
 
     while(start <= mid && start2 <= end) {
-        if(arr[start] <= arr[start2]){
+        if(arr[start].height <= arr[start2].height){
             ++start;
         } else {
             var value = arr[start2];
