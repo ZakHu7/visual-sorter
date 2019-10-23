@@ -2,6 +2,7 @@ import React from 'react';
 import Rectangle from './Rectangle.js';
 // import './Rectangle.css'
 
+// To create all the Rectangles that is used for the data
 
 export default function CreateRectangles(props){
     // var style = {
@@ -12,9 +13,11 @@ export default function CreateRectangles(props){
     var rectNum = props.rectNum;
     var data = props.data;
     var lightUp = props.lightUp;
+    var maxWidth = props.maxWidth;
 
     
     var margin = 0.5;
+    var width = Math.floor(maxWidth/rectNum);
 
     var rects = [];
 
@@ -25,8 +28,8 @@ export default function CreateRectangles(props){
         //console.log(i);
         var rect = data[i];
         var height = rect.height;
-        var width = rect.width;
-        var color = rect.color
+        var width = width;
+        var color = rect.color;
         var displayHeight = height;
         if (height == 0) {
             displayHeight = "";

@@ -4,13 +4,15 @@
 
 .App-main {
   background-color: #222629;
-  min-height: 45vh;
+  min-height: 40vh;
   display: flex;
   /* flex-direction: column; */
-  align-items: center;
+  /* align-items: center; */
+  align-items: flex-end;
   justify-content: center;
   font-size: 9px;
   color: white;
+  padding-bottom: 0;
   /* vertical-align:bottom; */
 }
 
@@ -25,4 +27,18 @@
   font-size: 9px;
   color: white;
   /* vertical-align:bottom; */
+}
+
+.App-summary {
+  background-color: #222629;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: auto;
+  font-size: 30px;
+  color: white;
+  vertical-align: center;
+
 }

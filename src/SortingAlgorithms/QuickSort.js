@@ -1,31 +1,33 @@
 // QuickSort
 
-export default function QuickSort(arr, setSteps, setStepsCounter, setTotalSteps) {
+export default function QuickSort(arr, setSteps, setStepsCounter, setTotalSteps, setComparisons) {
 	//IT IS CRUCIAL TO MAKE A COPY HERE!!!
 	//YOU CANNOT MANIPULATE THE ORIGINAL ARRAY!!!
 	let copy = [...arr];
 	//var stepsCounter = 0;
-	var steps = [];
+    var steps = [];
+    var comparisons = [0];
 
-	quickSortR(copy, 0, copy.length - 1, steps);
+	quickSortR(copy, 0, copy.length - 1, steps, comparisons);
 
 
 	//console.log(steps);
 	setSteps(steps);
 	setStepsCounter(steps.length);
-	setTotalSteps(steps.length);
+    setTotalSteps(steps.length);
+    setComparisons(comparisons[0]);
 }
 
-function quickSortR(arr, start, end, steps){
+function quickSortR(arr, start, end, steps, comparisons){
     if (start < end){
-        var pi = partition(arr, start, end, steps);
+        var pi = partition(arr, start, end, steps, comparisons);
 
-        quickSortR(arr, start, pi - 1, steps);
-        quickSortR(arr, pi + 1, end, steps);
+        quickSortR(arr, start, pi - 1, steps, comparisons);
+        quickSortR(arr, pi + 1, end, steps, comparisons);
     }
 }
 
-function partition(arr, start, end, steps){
+function partition(arr, start, end, steps, comparisons){
     // Take a value to pivot around
     var firstVal = arr[start].height;
     var lastVal = arr[end].height;
@@ -39,14 +41,22 @@ function partition(arr, start, end, steps){
     arr[loc] = arr[end];
     arr[end] = tmpRect;
 
+    // Only pivot the last element
+    // var pivot = arr[end].height;
+    // var tmpRect = arr[end];
+
     var i = start;
 
     for (var j = start; j < end; ++j) {
+        // console.log([arr[j].height, pivot, i , j]);
+        ++comparisons[0];
         if (arr[j].height < pivot) {
-            steps.push(['s', i, j]);
-            let tmp = arr[j];
-            arr[j] = arr[i];
-            arr[i] = tmp;
+            if (i != j) {
+                steps.push(['s', i, j]);
+                let tmp = arr[j];
+                arr[j] = arr[i];
+                arr[i] = tmp;
+            }
             ++i;
         }
     }

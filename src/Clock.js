@@ -3,6 +3,8 @@ import { blue } from '@material-ui/core/colors';
 import StackUtils from 'stack-utils';
 import './Rectangle.css'
 
+//NotUsed, was trying to see if this can perform intervals properly
+
 export default function Clock(props){
     const [currentCount, setCount] = useState(100);
 
