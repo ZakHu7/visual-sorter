@@ -47,9 +47,6 @@ function SingleSelect(props) {
                         id: props.title,
                     }}
                 >
-                    <MenuItem value="">
-                        <em>None</em>
-                    </MenuItem>
                     {props.items.map(item => (
                         <MenuItem value={item}>{item}</MenuItem>
 
